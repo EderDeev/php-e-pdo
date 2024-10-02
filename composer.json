@@ -1,0 +1,14 @@
+{
+  "name": "vendor_name/php-e-pdo",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Eder",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+  }
+}
