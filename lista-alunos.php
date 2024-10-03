@@ -1,22 +1,22 @@
 <?php
-require_once "Student.php";
-require_once "vendor/autoload.php";
 
-$caminhoAbsoluto = __DIR__ . '/banco.sqlite';
-$pdo  = new PDO('sqlite:'.$caminhoAbsoluto);
+require 'src/Infrastructure/Persistence/ConnectionCreator.php';
+require 'src/Domain/Model/Student.php';
+require "vendor/autoload.php";
+
+
+
+$pdo = ConnectionCreator::createConnecetion();
 
 $statement = $pdo->query('SELECT * FROM students');
 
-$studentListData = $statement->fetchAll(PDO::FETCH_ASSOC);
-$studentList = [];
 
-foreach ($studentListData as $student) {
-    $studentList[] = new Student(
-        $student['id'],
-        $student['name'],
-        new \DateTimeImmutable($student['birthday']),
+while($studentListData = $statement->fetch(PDO::FETCH_ASSOC)){
+    $student = new Student(
+        $studentListData['id'],
+        $studentListData['name'],
+         new \DateTimeImmutable($studentListData['birthday']),
     );
-
-var_dump($studentList);
-
+    var_dump($student);
 }
+exit();

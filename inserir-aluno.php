@@ -1,12 +1,12 @@
 <?php
 
-require_once "vendor/autoload.php";
-require 'Student.php';
+require 'src/Infrastructure/Persistence/ConnectionCreator.php';
+require 'src/Domain/Model/Student.php';
+require "vendor/autoload.php";
 
-$caminhoAbsoluto = __DIR__ . '/banco.sqlite';
-$pdo  = new PDO('sqlite:'.$caminhoAbsoluto);
 
-$student = new Student(null,"Aluno2';DROP TABLE student",new DateTimeImmutable('2000-08-19'));
+$pdo = ConnectionCreator::createConnecetion();
+$student = new Student(null,"João",new DateTimeImmutable('2001-08-20'));
 
 $sqlInsert = "INSERT INTO students(name,birthday) VALUES(?,?)";
 $stmt = $pdo->prepare($sqlInsert);
