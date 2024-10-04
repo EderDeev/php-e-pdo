@@ -30,4 +30,9 @@ class Student
     {
         return $this->birthday;
     }
+
+    public function getAge(): int
+    {
+        return $this->birthday->diff(new \DateTimeImmutable())->y;
+    }
 }
