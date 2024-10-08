@@ -1,19 +1,19 @@
 <?php
 
-
+namespace  src\Domain\Model;
 
 class Student
 {
     private string $name;
     private ?int $id;
-    private \DateTimeInterface $birthday;
+    private \DateTimeInterface $birthDate;
 
     public function __construct(?int $id, string $name, \DateTimeInterface $birthday
     )
     {
         $this->id = $id;
         $this->name = $name;
-        $this->birthday = $birthday;
+        $this->birthDate = $birthday;
     }
 
     public function getName(): string
@@ -26,13 +26,13 @@ class Student
         return $this->id;
     }
 
-    public function getBirthday(): DateTimeImmutable
+    public function getBirthdate(): DateTimeImmutable
     {
-        return $this->birthday;
+        return $this->birthDate;
     }
 
     public function getAge(): int
     {
-        return $this->birthday->diff(new \DateTimeImmutable())->y;
+        return $this->birthDate->diff(new \DateTimeImmutable())->y;
     }
 }

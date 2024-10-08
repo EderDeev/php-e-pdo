@@ -1,7 +1,7 @@
 <?php
 
-require 'src/Domain/Model/Student.php';
 
+namespace JetBrains\PhpStorm\src\Domain\Repository;
 interface StudentRepository
 {
     public function allStudents():array;
