@@ -1,13 +1,15 @@
 <?php
 
 
-use src\Domain\Model\Student;
-use src\Infrastructure\Repository\PdoStudentRepository;
+use Alura\PDO\Domain\Model\Student;
+use Alura\PDO\Infrastructure\Persistence\ConnectionCreator;
+use Alura\PDO\Infrastructure\Repository\PdoStudentRepository;
+
 require_once 'vendor/autoload.php';
 
 
 
-$connection = src\Infrastructure\Persistence\ConnectionCreator::createConnecetion();
+$connection = ConnectionCreator::createConnection();
 $repositorio = new PdoStudentRepository($connection);
 
 $connection->beginTransaction();

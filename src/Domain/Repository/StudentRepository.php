@@ -1,11 +1,15 @@
 <?php
 
 
-namespace JetBrains\PhpStorm\src\Domain\Repository;
+namespace Alura\PDO\Domain\Repository;
+
+use Alura\PDO\Domain\Model\Student;
+
 interface StudentRepository
 {
     public function allStudents():array;
-    public function save():bool;
-    public function remove():bool;
-    public function studentBirthday(DateTimeInterface $birthday):array;
+    public function save(Student $student):bool;
+    public function remove(Student $student):bool;
+    public function studentsBirthAt(\DateTimeInterface $birthday):array;
 }
+//studentsBirthAt

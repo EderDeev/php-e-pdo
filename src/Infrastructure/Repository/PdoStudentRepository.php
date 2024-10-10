@@ -1,9 +1,13 @@
 <?php
 
 
-namespace src\Infrastructure\Repository;
-use src\Domain\Model\Student;
+namespace Alura\PDO\Infrastructure\Repository;
+
+use Alura\PDO\Domain\Model\Student;
+use Alura\PDO\Domain\Repository\StudentRepository;
 use PDO;
+require 'vendor/autoload.php';
+
 
 class PdoStudentRepository implements StudentRepository
 {
@@ -16,7 +20,7 @@ class PdoStudentRepository implements StudentRepository
 
     public function allStudents(): array
     {
-        $sqlQuery = 'SELECT * FROM students;';
+        $sqlQuery = 'SELECT * FROM studentsclass;';
         $stmt = $this->connection->query($sqlQuery);
 
         return $this->hydrateStudentList($stmt);
@@ -24,7 +28,7 @@ class PdoStudentRepository implements StudentRepository
 
     public function studentsBirthAt(\DateTimeInterface $birthDate): array
     {
-        $sqlQuery = 'SELECT * FROM students WHERE birth_date = ?;';
+        $sqlQuery = 'SELECT * FROM studentsclass WHERE birth_date = ?;';
         $stmt = $this->connection->prepare($sqlQuery);
         $stmt->bindValue(1, $birthDate->format('Y-m-d'));
         $stmt->execute();
@@ -59,7 +63,7 @@ class PdoStudentRepository implements StudentRepository
 
     private function insert(Student $student): bool
     {
-        $insertQuery = 'INSERT INTO students (name, birth_date) VALUES (:name, :birth_date);';
+        $insertQuery = 'INSERT INTO studentsclass (name, birth_date) VALUES (:name, :birth_date);';
         $stmt = $this->connection->prepare($insertQuery);
 
         $success = $stmt->execute([
@@ -76,7 +80,7 @@ class PdoStudentRepository implements StudentRepository
 
     private function update(Student $student): bool
     {
-        $updateQuery = 'UPDATE students SET name = :name, birth_date = :birth_date WHERE id = :id;';
+        $updateQuery = 'UPDATE studentsclass SET name = :name, birth_date = :birth_date WHERE id = :id;';
         $stmt = $this->connection->prepare($updateQuery);
         $stmt->bindValue(':name', $student->name());
         $stmt->bindValue(':birth_date', $student->birthDate()->format('Y-m-d'));
@@ -87,7 +91,7 @@ class PdoStudentRepository implements StudentRepository
 
     public function remove(Student $student): bool
     {
-        $stmt = $this->connection->prepare('DELETE FROM students WHERE id = ?;');
+        $stmt = $this->connection->prepare('DELETE FROM studentsclass WHERE id = ?;');
         $stmt->bindValue(1, $student->id(), PDO::PARAM_INT);
 
         return $stmt->execute();

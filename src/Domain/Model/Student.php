@@ -1,38 +1,53 @@
 <?php
 
-namespace  src\Domain\Model;
+namespace  Alura\PDO\Domain\Model;
 
 class Student
 {
-    private string $name;
     private ?int $id;
+    private string $name;
     private \DateTimeInterface $birthDate;
 
-    public function __construct(?int $id, string $name, \DateTimeInterface $birthday
-    )
+    public function __construct(?int $id, string $name, \DateTimeInterface $birthDate)
     {
         $this->id = $id;
         $this->name = $name;
-        $this->birthDate = $birthday;
+        $this->birthDate = $birthDate;
     }
 
-    public function getName(): string
+    public function defineId(int $id): void
     {
-        return $this->name;
+        if (!is_null($this->id)) {
+            throw new \DomainException('Você só pode definir o ID uma vez');
+        }
+
+        $this->id = $id;
     }
 
-    public function getId(): ?int
+    public function id(): ?int
     {
         return $this->id;
     }
 
-    public function getBirthdate(): DateTimeImmutable
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function changeName(string $newName): void
+    {
+        $this->name = $newName;
+    }
+
+    public function birthDate(): \DateTimeInterface
     {
         return $this->birthDate;
     }
 
-    public function getAge(): int
+    public function age(): int
     {
-        return $this->birthDate->diff(new \DateTimeImmutable())->y;
+        return $this->birthDate
+            ->diff(new \DateTimeImmutable())
+            ->y;
     }
 }
