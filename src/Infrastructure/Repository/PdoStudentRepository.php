@@ -64,12 +64,12 @@ class PdoStudentRepository implements StudentRepository
 
     private function insert(Student $student): bool
     {
-        $insertQuery = 'INSERT INTO studentsclasse (name, birth_date) VALUES (:name, :birth_date);';
+        $insertQuery = 'INSERT INTO studentsclass (name, birth_date) VALUES (:name, :birth_date);';
         $stmt = $this->connection->prepare($insertQuery);
 
-        if ($stmt === false){
-            throw new RuntimeException('Erro na query do banco');
-        }
+        //if ($stmt === false){
+        //     throw new RuntimeException('Erro na query do banco');
+        // }
 
         $success = $stmt->execute([
             ':name' => $student->name(),

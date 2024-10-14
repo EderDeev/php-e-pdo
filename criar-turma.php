@@ -5,7 +5,7 @@ use Alura\PDO\Domain\Model\Student;
 use Alura\PDO\Infrastructure\Persistence\ConnectionCreator;
 use Alura\PDO\Infrastructure\Repository\PdoStudentRepository;
 require_once 'vendor/autoload.php';
-use http\Exception\RuntimeException;
+
 
 
 try {
@@ -26,8 +26,9 @@ $aStudent2 = new Student(
 );
 $repository->save($aStudent2);
 $connection->commit();
-}catch (RuntimeException $e){
+echo 'Alunos introduzidos com sucesso';
+}catch (PDOException $e){
     echo $e->getMessage();
-
+    $connection->rollBack();
 }
 
