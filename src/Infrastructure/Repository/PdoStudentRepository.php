@@ -3,6 +3,7 @@
 
 namespace Alura\PDO\Infrastructure\Repository;
 
+use Alura\PDO\Domain\Model\Phone;
 use Alura\PDO\Domain\Model\Student;
 use Alura\PDO\Domain\Repository\StudentRepository;
 use http\Exception\RuntimeException;
@@ -39,15 +40,17 @@ class PdoStudentRepository implements StudentRepository
 
     private function hydrateStudentList(\PDOStatement $stmt): array
     {
-        $studentDataList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $studentDataList = $stmt->fetchAll();
         $studentList = [];
 
         foreach ($studentDataList as $studentData) {
-            $studentList[] = new Student(
+            $student = new Student(
                 $studentData['id'],
                 $studentData['name'],
                 new \DateTimeImmutable($studentData['birth_date'])
             );
+            $this->fillPhonesOf($student);
+            $studentList[] = $student;
         }
 
         return $studentList;
@@ -67,9 +70,6 @@ class PdoStudentRepository implements StudentRepository
         $insertQuery = 'INSERT INTO studentsclass (name, birth_date) VALUES (:name, :birth_date);';
         $stmt = $this->connection->prepare($insertQuery);
 
-        //if ($stmt === false){
-        //     throw new RuntimeException('Erro na query do banco');
-        // }
 
         $success = $stmt->execute([
             ':name' => $student->name(),
@@ -101,6 +101,23 @@ class PdoStudentRepository implements StudentRepository
 
         return $stmt->execute();
     }
+
+    private function fillPhonesOf(Student $student): void{
+        $selectQuery = 'SELECT id,area_code,number FROM phones WHERE student_id = ?';
+        $stmt =$this->connection->prepare($selectQuery);
+        $stmt->bindValue(1,$student->id(),PDO::PARAM_INT);
+        $stmt->execute();
+
+        $phonesDataList = $stmt->fetchAll();
+        foreach($phonesDataList as $phoneData){
+            $phone = new Phone(
+                $phoneData['id'],
+                $phoneData['area_code'],
+                $phoneData['number']
+            );
+        $student->addPhone($phone);
+    }
+}
 }
 
 
